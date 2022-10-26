@@ -39,7 +39,7 @@ export default {
       content: "",
     };
   },
-  created() {
+  mounted() {
     this.latitude = 37.6771176065756; //pos.coords.latitude;
     this.longitude = 126.749259861283; //pos.coords.longitude;
     if (!("geolocation" in navigator)) {
