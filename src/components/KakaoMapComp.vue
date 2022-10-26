@@ -85,7 +85,7 @@ export default {
     initMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(37.6678578, 126.7446242),
+        center: new kakao.maps.LatLng(37.6771176065756, 126.749259861283),
         level: 4,
       };
       this.map = new kakao.maps.Map(container, options);
