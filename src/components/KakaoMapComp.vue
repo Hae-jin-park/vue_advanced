@@ -29,8 +29,6 @@ export default {
   data() {
     return {
       map: null,
-      lat: 0,
-      lng: 0,
       markers: [],
       geocoder: null,
       marker: null,
@@ -41,7 +39,7 @@ export default {
   },
   mounted() {
     this.latitude = 37.6771176065756; //pos.coords.latitude;
-    this.longitude = 126.749259861283; //pos.coords.longitude;
+    this.longitude = 126.749259861283; //pos.coords.longitude
     if (!("geolocation" in navigator)) {
       return;
     }
@@ -66,6 +64,7 @@ export default {
       this.searchAddrFromCoords(this.map.getCenter(), this.displayCenterInfo);
     },
     defaultPos() {
+      //만약 현재위치가 표시 안되면 위도 경도 기본값 설정.(일산 성저2차APT 좌표.)
       this.latitude = 37.6771176065756; //pos.coords.latitude;
       this.longitude = 126.749259861283; //pos.coords.longitude
       this.moveMap();
@@ -78,14 +77,19 @@ export default {
           this.moveMap();
         },
         (err) => {
-          alert(err.message);
+          alert(
+            "현재 위치 정보를 검색할 수 없어, 기본값으로 지정된 위치를 표시합니다.   " +
+              "code:" +
+              err.code
+          );
+          this.defaultPos();
         }
       );
     },
     initMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(37.6771176065756, 126.749259861283),
+        center: new kakao.maps.LatLng(0, 0),
         level: 4,
       };
       this.map = new kakao.maps.Map(container, options);
@@ -102,6 +106,7 @@ export default {
 
       // 지도의 상단 우측에 지도 타입 변경 컨트롤을 추가한다
       this.map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
       this.searchAddrFromCoords(this.map.getCenter(), this.displayCenterInfo);
       kakao.maps.event.addListener(this.map, "click", this.mapClickCallback);
     },
