@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import KakaoLoginSuccessView from "../views/KakaoLoginSuccessView.vue";
+import MapView from "../views/MapView.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,11 @@ const routes = [
     path: "/success.do",
     name: "success.do",
     component: KakaoLoginSuccessView,
+  },
+  {
+    path: "/map.do",
+    name: "map.do",
+    component: MapView,
   },
 ];
 
