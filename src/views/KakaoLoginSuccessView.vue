@@ -1,13 +1,25 @@
 <template>
-  <div>로그인 완료</div>
+  <div>
+    로그인 완료
+
+    <span>nichName : {{ nickName }}</span>
+    <img :src="img" alt="image" />
+  </div>
 </template>
 
 <script>
 import axios from "axios";
 export default {
-  created() {
+  data() {
+    return {
+      nickName: "",
+      img: "",
+    };
+  },
+  async created() {
     // console.log(window.Kakao);
     this.getToken();
+    this.getUserInfo();
   },
   methods: {
     async getToken() {
@@ -24,7 +36,21 @@ export default {
           code,
         },
       });
-      console.log("access_token", resp.data.access_token);
+      //   console.log("access_token", resp.data.access_token);
+      window.Kakao.Auth.setAccessToken(resp.data.access_token);
+    },
+    async getUserInfo() {
+      window.Kakao.API.request({
+        url: "/v2/user/me",
+      })
+        .then((resp) => {
+          //   console.log(resp);
+          this.nickName = resp.properties.nickname;
+          this.img = resp.properties.profile_image;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

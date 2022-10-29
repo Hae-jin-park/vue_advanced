@@ -8,7 +8,12 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  created() {
+    window.Kakao.init(process.env.VUE_APP_KAKAO_JS_API_KEY);
+    //console.log(window.Kakao);
+  },
+};
 </script>
 <style>
 #app {
