@@ -36,6 +36,7 @@ export default {
           code,
         },
       });
+      console.log(resp);
       //   console.log("access_token", resp.data.access_token);
       window.Kakao.Auth.setAccessToken(resp.data.access_token);
     },

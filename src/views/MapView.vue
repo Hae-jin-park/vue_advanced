@@ -8,6 +8,7 @@ export default {
     initKakaoMap(callback) {
       const script = document.createElement("script");
       script.onload = () => window.kakao.maps.load(callback);
+      //console.log(process.env.VUE_APP_KAKAO_JS_API_KEY);
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.VUE_APP_KAKAO_JS_API_KEY}&autoload=false`;
       document.head.appendChild(script);
     },
