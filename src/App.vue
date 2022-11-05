@@ -4,10 +4,22 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </nav>
-    <router-view/>
+    <router-view />
+    <ControllerView />
+    <MonitorView />
   </div>
 </template>
+<script>
+import ControllerView from "@/components/ControllerView.vue";
+import MonitorView from "@/components/MonitorView.vue";
 
+export default {
+  components: {
+    ControllerView,
+    MonitorView,
+  },
+};
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
