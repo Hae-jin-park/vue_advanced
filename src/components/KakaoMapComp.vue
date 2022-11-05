@@ -51,7 +51,7 @@ export default {
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
         "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
-        process.env.VUE_APP_KAKAO_API_KEY +
+        process.env.VUE_APP_KAKAO_JS_API_KEY +
         "&libraries=services";
       document.head.appendChild(script);
     }
