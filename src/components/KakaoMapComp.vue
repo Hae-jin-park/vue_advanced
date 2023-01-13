@@ -1,10 +1,10 @@
 <template>
   <div class="map_wrap">
     <div id="map" class="mx-auto w-full h-96"></div>
-    <!-- <div class="hAddr">
+    <div class="hAddr bg-white rounded-md border-2 border-emerald-600">
       <span class="title">지도중심기준 행정동 주소정보</span>
       <span id="centerAddr"></span>
-    </div> -->
+    </div>
     <button
       type="button"
       class="inline-block px-6 py-2.5 bg-blue-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-lg hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
@@ -100,7 +100,10 @@ export default {
 
       this.marker = new kakao.maps.Marker(); // 클릭한 위치를 표시할 마커입니다
       this.ps = new window.kakao.maps.services.Places();
-      this.infowindow = new kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+      this.infowindow = new kakao.maps.InfoWindow({
+        zindex: 1,
+        removable: true,
+      }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
       // 지도 타입 변경 컨트롤을 생성한다
       var mapTypeControl = new kakao.maps.MapTypeControl();
 
@@ -108,7 +111,29 @@ export default {
       this.map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
       this.searchAddrFromCoords(this.map.getCenter(), this.displayCenterInfo);
-      kakao.maps.event.addListener(this.map, "click", this.mapClickCallback);
+      //kakao.maps.event.addListener(this.map, "click", this.mapClickCallback);
+      // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+
+      this.getAddrWithCoord();
+    },
+    getAddrWithCoord() {
+      //'좌표로 주소 얻어내기 from kakaoMap Api sample' : https://apis.map.kakao.com/web/sample/coord2addr/'
+      // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+      var ctx = this;
+      this.marker = new window.kakao.maps.Marker(); // 클릭한 위치를 표시할 마커입니다
+      ctx.searchAddrFromCoords(ctx.map.getCenter(), ctx.displayCenterInfo);
+      window.kakao.maps.event.addListener(
+        ctx.map,
+        "click",
+        this.mapClickCallback
+      );
+      window.kakao.maps.event.addListener(ctx.map, "idle", function () {
+        //console.log("lat : ", ctx.map.getCenter().La);
+        this.lat = ctx.map.getCenter().La;
+        //console.log("lng : ", ctx.map.getCenter().Ma);
+        this.lng = ctx.map.getCenter().Ma;
+        ctx.searchAddrFromCoords(ctx.map.getCenter(), ctx.displayCenterInfo);
+      });
     },
     displayMarker(markerPositions) {
       if (this.markers.length > 0) {
@@ -146,12 +171,12 @@ export default {
     },
     displayCenterInfo(result, status) {
       if (status === kakao.maps.services.Status.OK) {
-        //var infoDiv = document.getElementById("centerAddr");
+        var infoDiv = document.getElementById("centerAddr");
 
         for (var i = 0; i < result.length; i++) {
           // 행정동의 region_type 값은 'H' 이므로
           if (result[i].region_type === "H") {
-            //infoDiv.innerHTML = result[i].address_name;
+            infoDiv.innerHTML = result[i].address_name;
             break;
           }
         }
